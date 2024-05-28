@@ -13,7 +13,6 @@
 import socket
 import ctypes
 
-
 restricted_ip_addresses = ["192.168.1.75"]
 
 hostname = socket.gethostname()
