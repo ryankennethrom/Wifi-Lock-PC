@@ -12,12 +12,17 @@
 
 import socket
 import ctypes
+import time
 
 restricted_ip_addresses = ["192.168.1.75"]
+program_execution_interval_seconds = 10
 
-hostname = socket.gethostname()
+while True:
+    hostname = socket.gethostname()
 
-ip_address = socket.gethostbyname(hostname)
+    ip_address = socket.gethostbyname(hostname)
 
-if str(ip_address) in restricted_ip_addresses:
-    ctypes.windll.user32.LockWorkStation()
+    if str(ip_address) in restricted_ip_addresses:
+        ctypes.windll.user32.LockWorkStation()
+    
+    time.sleep(program_execution_interval_seconds)
