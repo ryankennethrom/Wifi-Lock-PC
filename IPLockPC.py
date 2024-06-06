@@ -17,29 +17,79 @@ import subprocess
 import pyuac
 import tkinter
 from tkinter.filedialog import askdirectory
+import datetime
+import subprocess
+import os
 
 # Public Variables
 # 192.168.223.102 for printer
 # 127.0.0.1 for no wifi
 restricted_ip_addresses = ["192.168.1.75", "192.168.223.102", "127.0.0.1"]
 path_to_exe_file = "C:\\Users\\ryanr\\IP-Lock-PC\\dist\\IPLockPC.exe"
+iso_hour_start = 14
+iso_hour_end = 18
+
 
 # Private Variables
 taskName = "IPLockPC"
 program_execution_interval_seconds = 10
 
+# Shuts down the computer
+def shutdownComputer():
+    os.system("shutdown /s /t 0")
+
+# Locks the computer
+def lockComputer():
+    ctypes.windll.user32.LockWorkStation()
+
+def disableWifi():
+    subprocess.run('netsh interface set interface "Wi-Fi" admin=disable', shell=True)
+
+def enableWifi():
+    subprocess.run('netsh interface set interface "Wi-Fi" admin=enable', shell=True)
+
+def getCurrentHour(format: str):
+    if(format == "24-hours"):
+        now = datetime.datetime.now()
+        hour_now = int(str(now.time())[:2])
+        return hour_now
+    else:
+        raise Exception("Unsupported format argument on getCurrentHour()")
+
+def isRestrictedTime():
+    hour_now = getCurrentHour(format="24-hours")
+    return hour_now >= iso_hour_start and hour_now <= iso_hour_end
+
+def isRestrictedIPAddress(ip_address: str):
+    return ip_address in restricted_ip_addresses
+
+def getConnectedWifiIPAddress() -> str:
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    return str(ip_address)
+
+def waitForSeconds(timeInSeconds: int):
+    time.sleep(timeInSeconds)
+
+def log(log_tag: str, any):
+    if(log_tag == ""):
+        raise Exception("Invalid log_tag in log()")
+    print(log_tag + " : " + any)
+
 def main():
+
     while True:
-        hostname = socket.gethostname()
 
-        ip_address = socket.gethostbyname(hostname)
+        connected_wifi_ip_address = getConnectedWifiIPAddress()
 
-        print("IP address: " + ip_address)
+        log("Connected Wi-Fi IP Address", connected_wifi_ip_address)
 
-        if str(ip_address) in restricted_ip_addresses:
-            ctypes.windll.user32.LockWorkStation()
+        if(isRestrictedTime() or isRestrictedIPAddress(connected_wifi_ip_address)):
+            disableWifi()
+        else:
+            enableWifi()
         
-        time.sleep(program_execution_interval_seconds)
+        waitForSeconds(program_execution_interval_seconds)
 
 def registerScheduledTask():
 
@@ -81,13 +131,11 @@ def unregisterScheduledTask():
     
     subprocess.run(listProcess, check=True)
 
-main()
-
-# if not pyuac.isUserAdmin():
-#     print("Re-launching as admin!")
-#     pyuac.runAsAdmin()
-# else:        
-#     main() # Already an admin here.
+if not pyuac.isUserAdmin():
+    print("Re-launching as admin!")
+    pyuac.runAsAdmin()
+else:        
+    main() # Already an admin here.
 
 # root = tkinter.Tk()
 # root.title("IPLockPC")
