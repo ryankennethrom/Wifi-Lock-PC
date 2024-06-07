@@ -24,7 +24,7 @@ import os
 # Public Variables
 # 192.168.223.102 for printer
 # 127.0.0.1 for no wifi
-restricted_ip_addresses = ["192.168.1.75", "192.168.223.102", "127.0.0.1"]
+restricted_ip_addresses = ["192.168.1.75", "192.168.223.102"]
 path_to_exe_file = "C:\\Users\\ryanr\\IP-Lock-PC\\dist\\IPLockPC.exe"
 iso_hour_start = 14
 iso_hour_end = 18
@@ -75,6 +75,10 @@ def log(log_tag: str, any):
     if(log_tag == ""):
         raise Exception("Invalid log_tag in log()")
     print(log_tag + " : " + any)
+
+def isNoWifiConnection():
+    connected_wifi_ip_address = getConnectedWifiIPAddress()
+    return connected_wifi_ip_address == "127.0.0.1"
 
 def main():
 
