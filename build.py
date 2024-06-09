@@ -1,4 +1,4 @@
 import subprocess
-from globalVariables import programName
+from globalvariables import programName
 
-subprocess.call(f"python -m PyInstaller --noconsole --name {programName} main.py")
+subprocess.call(f"python -m PyInstaller -F --noconsole --name {programName} main.py")

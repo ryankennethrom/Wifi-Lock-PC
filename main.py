@@ -1,10 +1,8 @@
-import time
 import pyuac
-from taskmanager import killTaskManager
-from personalcomputer import disableWifi, enableWifi, getCurrentHour, getConnectedWifiIPAddress
+from wificontroller import getConnectedWifiIPAddress
+from personalcomputer import getCurrentHour, shutdownComputer
 from terminal import log
-from globalVariables import execIntervalInSeconds, iso_hour_start, iso_hour_end, restricted_ip_addresses
-
+from globalvariables import iso_hour_start, iso_hour_end, restricted_ip_addresses
 
 def isRestrictedTime():
     hour_now = getCurrentHour(format="24-hours")
@@ -13,27 +11,13 @@ def isRestrictedTime():
 def isRestrictedIPAddress(ip_address: str):
     return ip_address in restricted_ip_addresses
 
-def waitForSeconds(timeInSeconds: int):
-    time.sleep(timeInSeconds)
-
-def isNoWifiConnection():
-    connected_wifi_ip_address = getConnectedWifiIPAddress()
-    return connected_wifi_ip_address == "127.0.0.1"
-
 def main():
+    connected_wifi_ip_address = getConnectedWifiIPAddress()
 
-    while True:
-        connected_wifi_ip_address = getConnectedWifiIPAddress()
+    log("Connected Wi-Fi IP Address", connected_wifi_ip_address)
 
-        log("Connected Wi-Fi IP Address", connected_wifi_ip_address)
-
-        if(isRestrictedTime() or isRestrictedIPAddress(connected_wifi_ip_address)):
-            disableWifi()
-            killTaskManager()
-        else:
-            enableWifi()
-            
-        waitForSeconds(execIntervalInSeconds)
+    if(isRestrictedTime() or isRestrictedIPAddress(connected_wifi_ip_address)):
+        shutdownComputer()
 
 if not pyuac.isUserAdmin():
     print("Re-launching as admin!")

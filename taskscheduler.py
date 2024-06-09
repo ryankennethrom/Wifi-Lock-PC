@@ -1,6 +1,6 @@
 import subprocess
-from globalVariables import programName
-from globalVariables import path_to_exe_file
+from globalvariables import programName
+from globalvariables import path_to_exe_file
 
 def registerProgram():
 
