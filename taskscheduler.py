@@ -41,3 +41,10 @@ def unregisterProgram():
     ]
     
     subprocess.run(listProcess, check=True)
+
+import pyuac
+if not pyuac.isUserAdmin():
+    print("Re-launching as admin!")
+    pyuac.runAsAdmin()
+else:        
+    registerProgram()
