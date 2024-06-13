@@ -4,7 +4,7 @@ import datetime
 
 # Shuts down the computer
 def shutdownComputer():
-    os.system("shutdown /s /t 0")
+    os.system("shutdown -s -f -t 0")
 
 # Locks the computer
 def lockComputer():
