@@ -10,7 +10,10 @@ def isRestrictedTime():
     return hour_now >= iso_hour_start and hour_now <= iso_hour_end
 
 def isRestrictedIPAddress(ip_address: str):
-    return ip_address in restricted_ip_addresses
+    for dict in restricted_ip_addresses:
+        if dict["IP Address"] == ip_address:
+            return True
+    return False
 
 def main():
     while True:
