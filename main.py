@@ -18,7 +18,7 @@ def main():
 
         log("Connected Wi-Fi IP Address", connected_wifi_ip_address)
 
-        if(isRestrictedTime() or isRestrictedIPAddress(connected_wifi_ip_address)):
+        if(isRestrictedIPAddress(connected_wifi_ip_address)):
             shutdownComputer()
         
         waitForSeconds(execIntervalInSeconds)
