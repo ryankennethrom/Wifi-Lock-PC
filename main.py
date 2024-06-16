@@ -1,6 +1,6 @@
 import pyuac
 from wificontroller import getConnectedWifiIPAddress
-from personalcomputer import getCurrentHour, shutdownComputer
+from personalcomputer import getCurrentHour, shutdownComputer, lockComputer
 from terminal import log
 from globalvariables import execIntervalInSeconds, iso_hour_start, iso_hour_end, restricted_ip_addresses
 from programpointer import waitForSeconds
@@ -22,7 +22,7 @@ def main():
         log("Connected Wi-Fi IP Address", connected_wifi_ip_address)
 
         if(isRestrictedIPAddress(connected_wifi_ip_address)):
-            shutdownComputer()
+            lockComputer()
         
         waitForSeconds(execIntervalInSeconds)
 
