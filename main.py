@@ -2,7 +2,7 @@ import pyuac
 from wificontroller import getConnectedWifiIPAddress
 from personalcomputer import getCurrentHour, shutdownComputer, lockComputer
 from terminal import log
-from globalvariables import execIntervalInSeconds, iso_hour_start, iso_hour_end, restricted_ip_addresses
+from globalvariables import responseType, execIntervalInSeconds, iso_hour_start, iso_hour_end, restricted_ip_addresses
 from programpointer import waitForSeconds
 
 def isRestrictedTime():
@@ -26,8 +26,11 @@ def main():
         
         waitForSeconds(execIntervalInSeconds)
 
-if not pyuac.isUserAdmin():
-    print("Re-launching as admin!")
-    pyuac.runAsAdmin()
-else:        
+if responseType == "lock computer":
     main()
+else:
+    if not pyuac.isUserAdmin():
+        print("Re-launching as admin!")
+        pyuac.runAsAdmin()
+    else:        
+        main()

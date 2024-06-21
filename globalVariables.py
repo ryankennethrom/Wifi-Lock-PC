@@ -4,3 +4,4 @@ restricted_ip_addresses = [{"Name": "Home IP 2", "IP Address":"192.168.1.75"},{"
 iso_hour_start = 6
 iso_hour_end = 14
 path_to_exe_file = "C:\\Users\\ryanr\\IP-Lock-PC\\dist\\IPLockPC.exe"
+responseType = "lock computer"
