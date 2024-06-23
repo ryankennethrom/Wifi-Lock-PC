@@ -1,36 +1,20 @@
-import pyuac
-from wificontroller import getConnectedWifiIPAddress
-from personalcomputer import getCurrentHour, shutdownComputer, lockComputer
-from terminal import log
-from globalvariables import responseType, execIntervalInSeconds, iso_hour_start, iso_hour_end, restricted_ip_addresses
+from personalcomputer import lockComputer
+from globalvariables import execIntervalInSeconds, restricted_connections, restrictWhenNoWifiConnection
 from programpointer import waitForSeconds
+from wificontroller import isWifiConnected
+import subprocess
 
-def isRestrictedTime():
-    hour_now = getCurrentHour(format="24-hours")
-    return hour_now >= iso_hour_start and hour_now <= iso_hour_end
 
-def isRestrictedIPAddress(ip_address: str):
-    for dict in restricted_ip_addresses:
-        if dict["IP Address"] == ip_address:
+def isConnectedToRestrictedWifiConnection():
+    for dict in restricted_connections:
+        if dict["SSID"] in str(subprocess.check_output("netsh wlan show interfaces")):
             return True
     return False
 
 def main():
     while True:
-        connected_wifi_ip_address = getConnectedWifiIPAddress()
-
-        log("Connected Wi-Fi IP Address", connected_wifi_ip_address)
-
-        if(isRestrictedIPAddress(connected_wifi_ip_address)):
+        if isConnectedToRestrictedWifiConnection() or ( restrictWhenNoWifiConnection and not isWifiConnected()):
             lockComputer()
-        
         waitForSeconds(execIntervalInSeconds)
 
-if responseType == "lock computer":
-    main()
-else:
-    if not pyuac.isUserAdmin():
-        print("Re-launching as admin!")
-        pyuac.runAsAdmin()
-    else:        
-        main()
+main()
