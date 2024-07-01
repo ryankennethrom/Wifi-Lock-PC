@@ -6,15 +6,20 @@ import subprocess
 
 
 def isConnectedToRestrictedWifiConnection():
+    interface_info = str(subprocess.check_output("netsh wlan show interfaces"))
+    ssid_index = interface_info.split().index("SSID")
+    ssid_value_index = ssid_index + 2
     for dict in restricted_connections:
-        if dict["SSID"] in str(subprocess.check_output("netsh wlan show interfaces")):
+        if dict["SSID"] in interface_info.split()[ssid_value_index]:
             return True
     return False
 
 def main():
     while True:
         if isConnectedToRestrictedWifiConnection() or ( restrictWhenNoWifiConnection and not isWifiConnected()):
-            lockComputer()
+            # lockComputer()
+            print("locked")
+            pass
         waitForSeconds(execIntervalInSeconds)
 
 main()
