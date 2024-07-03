@@ -1,11 +1,15 @@
 import os
 import ctypes
 import datetime
+import subprocess
 
 # Shuts down the computer
 def shutdownComputer():
     os.system("shutdown -s -f -t 0")
 
+def rebootComputer():
+    subprocess.call("shutdown /r /t 0", shell=True)
+    
 # Locks the computer
 def lockComputer():
     ctypes.windll.user32.LockWorkStation()
