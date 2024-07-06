@@ -8,19 +8,13 @@ import pyuac
 from personalcomputer import *
 
 def isRestrictionsActive():
-    call = f"powershell.exe -command \"Get-ScheduledTask '{programName+get("windowsUserName")}'\""
-    try:
-        output = subprocess.check_output(call, shell=True)
+    call = "powershell.exe -command \"Get-ScheduledTask | Where-Object {$_.TaskName -like" + f" '{programName+get("windowsUserName")}'"+"}\""
+    output = subprocess.check_output(call, shell=True)
+    if "Running" in str(output) or "Ready" in str(output):
         return True
-    except:
+    else:
         return False
-    # if "ObjectNotFound" in str(output):
-    #     return False
-    # elif "Ready" in str(output):
-    #     return True
-    # else:
-    #     raise Exception("isRestrictionsActive(): Task not 'Ready' and not 'ObjectNotFound'")
-
+    
 def menu():
     if not os.path.exists(f"{str(Path.cwd())}"+"\\userSettings.ini"):
         restoreDefaultConfig()
