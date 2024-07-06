@@ -7,12 +7,15 @@ from taskscheduler import unregisterProgram, registerProgram
 import pyuac
 from personalcomputer import *
 
-
-def process_exists(process_name): 
-    call = 'TASKLIST', '/FI', f'imagename eq {process_name}'
-    output = subprocess.check_output(call).decode()
-    last_line = output.strip().split('\r\n')[-1]
-    return last_line.lower().startswith(process_name.lower())
+def isRestrictionsActive():
+    call = f"powershell.exe -command \"Get-ScheduledTask '{programName+get("windowsUserName")}'\""
+    output = subprocess.check_output(call, shell=True)
+    if "ObjectNotFound" in str(output):
+        return False
+    elif "Ready" in str(output):
+        return True
+    else:
+        raise Exception("isRestrictionsActive(): Task not 'Ready' and not 'ObjectNotFound'")
 
 def menu():
     if not os.path.exists(f"{str(Path.cwd())}"+"\\userSettings.ini"):
@@ -27,7 +30,7 @@ def menu():
     print()
     print("🛠️ Restrict when not connected to wifi: " + get("restrictWhenNoWifiConnection"))
     print()
-    print("🛠️ Restrictions active: " + str(process_exists(connectionCheckerName+".exe")))
+    print("🛠️ Restrictions active: " + str(isRestrictionsActive()))
     print()
     print("Actions: ")
     print("(1) Add a restriction")
@@ -96,7 +99,7 @@ def optionSeven():
     menu()
     
 def optionFive():
-    if process_exists(connectionCheckerName+".exe"):
+    if isRestrictionsActive():
         unregisterProgram()
     else:
         registerProgram()
@@ -111,7 +114,7 @@ def optionFour():
 
 def optionOne():
     ssid = str(input("Enter SSID to restrict: "))
-    if process_exists(connectionCheckerName+".exe") and isSameSSID(ssid, getConnectedWifiSSID()):
+    if isRestrictionsActive() and isSameSSID(ssid, getConnectedWifiSSID()):
         user_input = input("Are you sure ? You will immediately be locked out. (Y/N) ")
         if user_input != "Y":
             input("Network not restricted ❌ ( Press Any Key ) ")
