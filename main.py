@@ -9,13 +9,17 @@ from personalcomputer import *
 
 def isRestrictionsActive():
     call = f"powershell.exe -command \"Get-ScheduledTask '{programName+get("windowsUserName")}'\""
-    output = subprocess.check_output(call, shell=True)
-    if "ObjectNotFound" in str(output):
-        return False
-    elif "Ready" in str(output):
+    try:
+        output = subprocess.check_output(call, shell=True)
         return True
-    else:
-        raise Exception("isRestrictionsActive(): Task not 'Ready' and not 'ObjectNotFound'")
+    except:
+        return False
+    # if "ObjectNotFound" in str(output):
+    #     return False
+    # elif "Ready" in str(output):
+    #     return True
+    # else:
+    #     raise Exception("isRestrictionsActive(): Task not 'Ready' and not 'ObjectNotFound'")
 
 def menu():
     if not os.path.exists(f"{str(Path.cwd())}"+"\\userSettings.ini"):
