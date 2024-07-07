@@ -80,21 +80,29 @@ def menu():
 
 def optionSix():
     ssid = getConnectedWifiSSID()
-    result = restrictSSID(ssid)
-    if result == 0:
-        input("Success ✅ ( Press Any Key ) ")
-    elif result == 1:
-        input("SSID already restricted ❌ ( Press Any Key ) ")
-    menu()
+    if ssid == None:
+        input("You are not connected to any network ❌ ( Press Any Key ) ")
+        menu()
+    else:
+        result = restrictSSID(ssid)
+        if result == 0:
+            input("Success ✅ ( Press Any Key ) ")
+        elif result == 1:
+            input("SSID already restricted ❌ ( Press Any Key ) ")
+        menu()
 
 def optionSeven():
     ssid = getConnectedWifiSSID()
-    result = unRestrictSSID(ssid)
-    if result == 0:
-        input("Success ✅ ( Press Any Key ) ")
-    elif result == 1:
-        input("SSID not restricted in the first place ❌ ( Press Any Key ) ")
-    menu()
+    if ssid == None:
+        input("You are not connected to any network ❌ ( Press Any Key ) ")
+        menu()
+    else: 
+        result = unRestrictSSID(ssid)
+        if result == 0:
+            input("Success ✅ ( Press Any Key ) ")
+        elif result == 1:
+            input("SSID not restricted in the first place ❌ ( Press Any Key ) ")
+        menu()
     
 def optionFive():
     if isRestrictionsActive():
