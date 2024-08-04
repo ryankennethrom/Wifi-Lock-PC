@@ -18,6 +18,7 @@ def isRestrictionsActive():
 def menu():
     if not os.path.exists(f"{str(Path.cwd())}"+"\\userSettings.ini"):
         restoreDefaultConfig()
+    is_restrictions_active = isRestrictionsActive()
     print("===================================================")
     print("Menu")
     print("===================================================")
@@ -26,16 +27,16 @@ def menu():
     for ssid in get("restrictedConnections").split(","):
         print("-"+ ssid)
     print()
-    print("🛠️ Restrict when not connected to wifi: " + get("restrictWhenNoWifiConnection"))
+    print("A) Lock PC when not connected to wifi: " + get("restrictWhenNoWifiConnection"))
     print()
-    print("🛠️ Restrictions active: " + str(isRestrictionsActive()))
+    print("B) Restrictions active in next boot up: " + str(is_restrictions_active))
     print()
     print("Actions: ")
     print("(1) Add a restriction")
     print("(2) Delete a restriction")
     print("(3) Restore default settings")
-    print("(4) Toggle restriction when not connected to wifi")
-    print("(5) Activate/deactivate restrictions ")
+    print("(4) Toggle A")
+    print("(5) Toggle B")
     print()
     user_input = str(input("Enter action : "))
     if user_input == "1":
