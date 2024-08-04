@@ -36,8 +36,6 @@ def menu():
     print("(3) Restore default settings")
     print("(4) Toggle restriction when not connected to wifi")
     print("(5) Activate/deactivate restrictions ")
-    print("(6) Restrict connected network")
-    print("(7) Unrestrict connected network")
     print()
     user_input = str(input("Enter action : "))
     if user_input == "1":
@@ -70,38 +68,8 @@ def menu():
                 menu()
         else:
             optionFive()
-    elif user_input == "6":
-        optionSix()
-    elif user_input == "7":
-        optionSeven()
     else:
         input("Invalid input ❌ ( Press Any Key ) ")
-        menu()
-
-def optionSix():
-    ssid = getConnectedWifiSSID()
-    if ssid == None:
-        input("You are not connected to any network ❌ ( Press Any Key ) ")
-        menu()
-    else:
-        result = restrictSSID(ssid)
-        if result == 0:
-            input("Success ✅ ( Press Any Key ) ")
-        elif result == 1:
-            input("SSID already restricted ❌ ( Press Any Key ) ")
-        menu()
-
-def optionSeven():
-    ssid = getConnectedWifiSSID()
-    if ssid == None:
-        input("You are not connected to any network ❌ ( Press Any Key ) ")
-        menu()
-    else: 
-        result = unRestrictSSID(ssid)
-        if result == 0:
-            input("Success ✅ ( Press Any Key ) ")
-        elif result == 1:
-            input("SSID not restricted in the first place ❌ ( Press Any Key ) ")
         menu()
     
 def optionFive():
