@@ -6,19 +6,14 @@ import subprocess
 from taskscheduler import unregisterProgram, registerProgram
 import pyuac
 from personalcomputer import *
+from userpreference import UserPreference
 
-def isRestrictionsActive():
-    call = "powershell.exe -command \"Get-ScheduledTask | Where-Object {$_.TaskName -like" + f" '{programName+get("windowsUserName")}'"+"}\""
-    output = subprocess.check_output(call, shell=True)
-    if "Running" in str(output) or "Ready" in str(output):
-        return True
-    else:
-        return False
     
 def menu():
     if not os.path.exists(f"{str(Path.cwd())}"+"\\userSettings.ini"):
         restoreDefaultConfig()
-    is_restrictions_active = isRestrictionsActive()
+    userPreference = UserPreference()
+    is_restrictions_active = userPreference.isRestrictionsActive()
     print("===================================================")
     print("Menu")
     print("===================================================")
@@ -74,7 +69,8 @@ def menu():
         menu()
     
 def optionFive():
-    if isRestrictionsActive():
+    userPreference = UserPreference()
+    if userPreference.isRestrictionsActive():
         unregisterProgram()
     else:
         registerProgram()
@@ -89,7 +85,8 @@ def optionFour():
 
 def optionOne():
     ssid = str(input("Enter SSID to restrict: "))
-    if isRestrictionsActive() and isSameSSID(ssid, getConnectedWifiSSID()):
+    userPreference = UserPreference()
+    if userPreference.isRestrictionsActive() and isSameSSID(ssid, getConnectedWifiSSID()):
         user_input = input("Are you sure ? You will immediately be locked out. (Y/N) ")
         if user_input != "Y":
             input("Network not restricted ❌ ( Press Any Key ) ")
