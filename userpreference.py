@@ -7,7 +7,7 @@ class UserPreference():
         pass
     
     def isRestrictionsActive(self):
-        call = "powershell.exe -command \"Get-ScheduledTask | Where-Object {$_.TaskName -like" + f" '{programName+get("windowsUserName")}'"+"}\""
+        call = "powershell.exe -WindowStyle Hidden -command \"Get-ScheduledTask | Where-Object {$_.TaskName -like" + f" '{programName+get("windowsUserName")}'"+"}\""
         output = subprocess.check_output(call, shell=True)
         if "Running" in str(output) or "Ready" in str(output):
             return True

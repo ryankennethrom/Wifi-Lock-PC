@@ -3,8 +3,6 @@ from devSettings import *
 from wifi import *
 import os
 import subprocess
-from taskscheduler import unregisterProgram, registerProgram
-import pyuac
 from personalcomputer import *
 from userpreference import UserPreference
 
@@ -43,37 +41,30 @@ def menu():
     elif user_input == "4":
         optionFour()
     elif user_input == "5":
-        if not pyuac.isUserAdmin():
-            print("Running as administrator on another window")
-
-            cmd = f"""   Start-Process PowerShell -Verb RunAs "-NoExit -NoProfile -Command `"cd {str(Path.cwd())}; ./{programName+'.exe;5'}`""  """
-            
-            # Use a list to make it easier to pass argument to subprocess
-            listProcess = [
-                "powershell.exe",
-                "-command",
-                cmd
-            ]
-
-            # Enjoy the magic
-            subprocess.run(listProcess, check=True)
-            response = input("You changes will be active in the next start up. Reboot now ? (Y/N) ")
-            if (response == "Y"):
-                rebootComputer()
-            else:
-                menu()
-        else:
-            optionFive()
+        optionFive()
     else:
         input("Invalid input ❌ ( Press Any Key ) ")
         menu()
     
 def optionFive():
-    userPreference = UserPreference()
-    if userPreference.isRestrictionsActive():
-        unregisterProgram()
+    cmd = f"""   Start-Process PowerShell -WindowStyle Hidden -Verb RunAs "-WindowStyle Hidden -NoProfile -Command `"cd {str(Path.cwd())}; ./{'Scheduler.exe;'}`""  """
+            
+    # Use a list to make it easier to pass argument to subprocess
+    listProcess = [
+                "powershell.exe",
+                "-WindowStyle",
+                "Hidden",
+                "-command",
+                cmd
+            ]
+
+    # Enjoy the magic
+    subprocess.run(listProcess, check=True)
+    response = input("You changes will be active in the next start up. Reboot now ? (Y/N) ")
+    if (response == "Y"):
+        rebootComputer()
     else:
-        registerProgram()
+        menu()
 
 def optionFour():
     if 'True'== get("restrictWhenNoWifiConnection"):
