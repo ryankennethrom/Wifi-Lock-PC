@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 # def restrictNetworkButton():
 #     my_listbox.get(my_listbox.curselection())
@@ -6,6 +7,13 @@ import tkinter as tk
 def add():
     my_listbox.insert(my_listbox.size(), entry1.get())
     entry1.delete(0, 'end')
+
+def getSelection(myListBox):
+    values = myListBox.curselection()
+    if values:
+        index = values[0]
+        val = myListBox.get(index)
+        messagebox.showinfo("Selection", val)
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -22,10 +30,10 @@ if __name__ == "__main__":
     myLabel = tk.Label(root, text="Restricted Networks", anchor="w",justify="left")
     myLabel.pack(padx=10, fill=tk.X)
 
-    frame0 = tk.Frame(root, height=20, bg="green")
+    frame0 = tk.Frame(root, height=20)
     frame0.pack(padx=10, pady=1, fill=tk.X)
 
-    my_listbox = tk.Listbox(frame0, width=72,bg='green')
+    my_listbox = tk.Listbox(frame0, width=40, height=5, font=10)
     # tk.Button(root, text="Button", command=
     my_listbox.pack(padx=10, pady=5, side="left", fill=tk.BOTH)
 
@@ -37,10 +45,10 @@ if __name__ == "__main__":
 
     scrollbar.config(command=my_listbox.yview)
 
-    frame1 = tk.Frame(root, height=20, bg="green")
+    frame1 = tk.Frame(root, height=20)
     frame1.pack(padx=10, pady=1, fill=tk.X)
 
-    entry1 = tk.Entry(frame1, width=60, bg="green")
+    entry1 = tk.Entry(frame1, width=60)
     # entry1.grid(column=0, row=1)
     entry1.pack( side='left', padx=10, fill=tk.X)
 
