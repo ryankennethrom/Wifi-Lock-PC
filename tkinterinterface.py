@@ -5,7 +5,7 @@ from tkinter import messagebox
 #     my_listbox.get(my_listbox.curselection())
 
 def add():
-    my_listbox.insert(my_listbox.size(), entry1.get())
+    my_listbox.insert(my_listbox.size(), " " + entry1.get())
     entry1.delete(0, 'end')
 
 def getSelection(myListBox):
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     frame0 = tk.Frame(root, height=20)
     frame0.pack(padx=10, pady=1, fill=tk.X)
 
-    my_listbox = tk.Listbox(frame0, width=40, height=5, font=10)
+    my_listbox = tk.Listbox(frame0, width=48, height=5, font=10, activestyle=tk.NONE, selectbackground='black')
     # tk.Button(root, text="Button", command=
     my_listbox.pack(padx=10, pady=5, side="left", fill=tk.BOTH)
 
