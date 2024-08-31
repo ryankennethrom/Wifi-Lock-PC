@@ -4,6 +4,10 @@ from tkinter import messagebox
 # def restrictNetworkButton():
 #     my_listbox.get(my_listbox.curselection())
 
+def onReturnEnterNetwork(event):
+    my_listbox.insert(my_listbox.size(), " " + entry1.get())
+    entry1.delete(0, 'end')
+
 def add():
     my_listbox.insert(my_listbox.size(), " " + entry1.get())
     entry1.delete(0, 'end')
@@ -49,6 +53,7 @@ if __name__ == "__main__":
     frame1.pack(padx=10, pady=1, fill=tk.X)
 
     entry1 = tk.Entry(frame1, width=60)
+    entry1.bind('<Return>', onReturnEnterNetwork)
     # entry1.grid(column=0, row=1)
     entry1.pack( side='left', padx=10, fill=tk.X)
 
