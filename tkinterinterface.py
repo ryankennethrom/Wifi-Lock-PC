@@ -37,7 +37,7 @@ if __name__ == "__main__":
     frame0 = tk.Frame(root, height=20)
     frame0.pack(padx=10, pady=1, fill=tk.X)
 
-    my_listbox = tk.Listbox(frame0, width=48, height=5, font=10, activestyle=tk.NONE, selectbackground='black')
+    my_listbox = tk.Listbox(frame0, width=40, height=5, font=10, activestyle=tk.NONE, selectbackground='black')
     # tk.Button(root, text="Button", command=
     my_listbox.pack(padx=10, pady=5, side="left", fill=tk.BOTH)
 
