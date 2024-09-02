@@ -9,8 +9,12 @@ def onReturnEnterNetwork(event):
     entry1.delete(0, 'end')
 
 def add():
-    my_listbox.insert(my_listbox.size(), " " + entry1.get())
-    entry1.delete(0, 'end')
+    text = entry1.get()
+    if len(text) <= 0:
+        return
+    else:
+        my_listbox.insert(my_listbox.size(), " " + text)
+        entry1.delete(0, 'end')
 
 def getSelection(myListBox):
     values = myListBox.curselection()
